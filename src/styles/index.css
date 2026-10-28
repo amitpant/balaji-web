@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Design tokens from balaji-docs/05-design-guide.md. Swap --color-accent for the logo colour. */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-bg: #ffffff;
+  --color-bg-soft: #f7f6f3;
+  --color-ink: #16181d;
+  --color-ink-soft: #5b616e;
+  --color-line: #e6e4df;
+  --color-accent: #1f6f5c;
+  --color-accent-ink: #ffffff;
+  --radius-card: 12px;
+}
+
+html {
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 17px;
+  }
+}
