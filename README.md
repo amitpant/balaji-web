@@ -21,4 +21,13 @@ npm run dev      # http://localhost:5173, proxies /api to http://localhost:4000
 
 ## Deploy
 
-Vercel or Netlify. Set the build command to `npm run build`, output to `dist/`, and add a rewrite of all routes to `/index.html` for client-side routing.
+**Cloudflare (current):** connected to this repo; every push to `main` rebuilds and deploys.
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+
+`wrangler.jsonc` holds the project name, the `dist/` folder, and single-page-app routing.
+
+Vercel or Netlify also work: build `npm run build`, output `dist/` (`vercel.json` handles routing).

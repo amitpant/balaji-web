@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers static-assets deploy for the React build.
+  // Cloudflare build settings: build command `npm run build`, deploy command `npx wrangler deploy`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "balaji-web",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Send unknown paths (e.g. /projects, /admin) to index.html so React Router handles them.
+    "not_found_handling": "single-page-application"
+  }
+}
