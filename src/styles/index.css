@@ -1,22 +1,48 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource/noto-sans-devanagari/400.css';
+@import '@fontsource/noto-sans-devanagari/600.css';
 
-/* Design tokens from balaji-docs/05-design-guide.md. Swap --color-accent for the logo colour. */
+/* Brand palette (balaji-docs/05-design-guide.md).
+   #DF6A35 is 3.4:1 on light backgrounds, so it is used for accents, large display text
+   and on charcoal; buttons and small text use the deeper --color-orange-ink (5.1:1). */
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Noto Sans Devanagari', ui-sans-serif, system-ui, sans-serif;
+  --color-charcoal: #202923;
+  --color-charcoal-2: #2b352f;
+  --color-orange: #df6a35;
+  --color-orange-ink: #b4501f;
+  --color-paper: #f7f5f0;
+  --color-sage: #e8ede5;
+  --color-ink: #202923;
+  --color-muted: #5f665e;
+  --color-line: #dcdfd7;
+  --color-on-dark: #f7f5f0;
+  --color-on-dark-muted: #c9cec5;
+
+  /* Admin panel tokens (kept for the admin screens) */
   --color-bg: #ffffff;
-  --color-bg-soft: #f7f6f3;
-  --color-ink: #16181d;
-  --color-ink-soft: #5b616e;
-  --color-line: #e6e4df;
-  --color-accent: #1f6f5c;
+  --color-bg-soft: #f7f5f0;
+  --color-ink-soft: #5f665e;
+  --color-accent: #b4501f;
   --color-accent-ink: #ffffff;
   --radius-card: 12px;
 }
 
 html {
   color: var(--color-ink);
-  background: var(--color-bg);
+  background: var(--color-paper);
   -webkit-font-smoothing: antialiased;
+  scroll-padding-top: 5rem;
+}
+
+html:lang(hi) body {
+  line-height: 1.75;
+}
+
+/* Letter-spacing breaks Devanagari conjuncts and matras, so wide-tracked labels use normal spacing in Hindi. */
+html:lang(hi) [class*='tracking-'] {
+  letter-spacing: normal;
 }
 
 body {
@@ -27,5 +53,29 @@ body {
 @media (min-width: 1024px) {
   body {
     font-size: 17px;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+/* Architectural blueprint grid for dark sections */
+.blueprint {
+  background-color: var(--color-charcoal);
+  background-image:
+    linear-gradient(rgba(247, 245, 240, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 245, 240, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

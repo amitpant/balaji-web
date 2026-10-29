@@ -9,8 +9,9 @@
     "binding": "ASSETS",
     // Send unknown paths (e.g. /projects, /admin) to index.html so React Router handles them.
     "not_found_handling": "single-page-application",
-    // /api requests go to worker.js (and on to balaji-api) instead of the static files.
-    "run_worker_first": ["/api/*"]
+    // Every request goes to worker.js first (it serves /assets/* straight from ASSETS),
+    // so it can forward /api, generate sitemap/robots and inject page metadata.
+    "run_worker_first": true
   },
   // The balaji-api Worker must be deployed before this binding works.
   "services": [{ "binding": "API", "service": "balaji-api" }]

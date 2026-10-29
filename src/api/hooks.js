@@ -1,45 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from './client.js';
-import { sampleProjects } from '../data/sampleProjects.js';
-import { site as defaults } from '../config/site.js';
+import { COMPANY } from '../i18n/strings.js';
 
-// Public data hooks. Until the owner publishes real projects (or if the API is
-// unreachable), the site falls back to the sample projects so it never looks empty.
+// Public data hooks. Everything shown about the business comes from the admin panel;
+// nothing is filled in with placeholder or sample values.
 
 export function useAllProjects() {
-  const q = useQuery({
-    queryKey: ['public-projects'],
-    queryFn: () => api('/projects?limit=50'),
-    retry: 0,
-  });
-  const real = q.data?.items || [];
-  const isSample = !q.isLoading && real.length === 0;
-  return { projects: isSample ? sampleProjects : real, isSample, isLoading: q.isLoading };
+  const q = useQuery({ queryKey: ['public-projects'], queryFn: () => api('/projects?limit=50') });
+  return { projects: q.data?.items || [], isLoading: q.isLoading, isError: q.isError };
 }
 
-export function useProject(slug, isSample) {
-  return useQuery({
-    queryKey: ['public-project', slug],
-    queryFn: () => api(`/projects/${slug}`),
-    enabled: !isSample,
-    retry: 0,
-  });
+export function useProject(slug) {
+  return useQuery({ queryKey: ['public-project', slug], queryFn: () => api(`/projects/${slug}`), retry: (n, err) => err.status !== 404 && n < 2 });
 }
 
 export function useSettings() {
-  const q = useQuery({ queryKey: ['public-settings'], queryFn: () => api('/settings'), retry: 0, staleTime: 5 * 60_000 });
+  const q = useQuery({ queryKey: ['public-settings'], queryFn: () => api('/settings'), staleTime: 5 * 60_000 });
   const s = q.data || {};
-  const pick = (k) => (s[k] !== undefined && s[k] !== '' ? s[k] : defaults[k]);
   return {
-    name: pick('companyName') || defaults.name,
-    tagline: pick('tagline'),
+    loaded: !q.isLoading,
+    name: COMPANY,
     logo: s.logo,
-    phone: pick('phone'),
-    whatsapp: pick('whatsapp'),
-    email: pick('email'),
-    address: pick('address'),
+    phone: s.phone,
+    whatsapp: s.whatsapp,
+    whatsappMessage: s.social?.whatsappMessage,
+    email: s.email,
+    address: s.address,
     mapUrl: s.mapUrl,
-    stats: s.stats?.length ? s.stats : defaults.stats,
+    aboutEn: s.aboutEn,
+    aboutHi: s.aboutHi,
+    services: s.services || [],
+    stats: (s.stats || []).filter((x) => x.label && x.value),
     trustBadges: s.trustBadges || [],
     social: s.social || {},
     marketing: s.marketing || {},
@@ -47,6 +38,6 @@ export function useSettings() {
 }
 
 export function useTestimonials() {
-  const q = useQuery({ queryKey: ['public-testimonials'], queryFn: () => api('/testimonials'), retry: 0 });
+  const q = useQuery({ queryKey: ['public-testimonials'], queryFn: () => api('/testimonials') });
   return q.data?.items || [];
 }

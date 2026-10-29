@@ -1,7 +1,7 @@
+import { useT } from '../i18n/index.jsx';
+
 const icons = {
-  facebook: (
-    <path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8a0 0 0 0 1 0 0z" />
-  ),
+  facebook: <path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8z" />,
   instagram: (
     <>
       <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
@@ -17,9 +17,8 @@ const icons = {
   ),
 };
 
-const labels = { facebook: 'Facebook', instagram: 'Instagram', youtube: 'YouTube' };
-
-export default function SocialIcons({ social = {} }) {
+export default function SocialIcons({ social = {}, dark = false }) {
+  const { t } = useT();
   const links = Object.keys(icons).filter((k) => social[k]);
   if (!links.length) return null;
   return (
@@ -30,10 +29,12 @@ export default function SocialIcons({ social = {} }) {
           href={social[k]}
           target="_blank"
           rel="noreferrer"
-          aria-label={labels[k]}
-          className="grid h-10 w-10 place-items-center rounded-full border border-line text-ink-soft hover:text-ink"
+          aria-label={t(`social.${k}`)}
+          className={`grid h-11 w-11 place-items-center rounded-full border ${
+            dark ? 'border-paper/25 text-on-dark-muted hover:text-paper' : 'border-line text-muted hover:text-charcoal'
+          }`}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
             {icons[k]}
           </svg>
         </a>

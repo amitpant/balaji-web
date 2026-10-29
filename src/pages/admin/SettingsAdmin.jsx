@@ -4,6 +4,15 @@ import { photo } from '../../lib/photo.js';
 import { Button, Card, Field, Input, Notice, PageHeader, inputCls } from './ui.jsx';
 import { useSiteSettings } from './useSiteSettings.js';
 
+const SERVICES = [
+  ['residential', 'Residential construction'],
+  ['commercial', 'Commercial construction'],
+  ['interior', 'Interior work'],
+  ['renovation', 'Renovation'],
+  ['design', 'Design and elevation'],
+  ['kitchen', 'Modular kitchens'],
+];
+
 function PasswordCard() {
   const [form, setForm] = useState({ currentPassword: '', newPassword: '' });
   const [state, setState] = useState({ errors: {}, message: null, busy: false });
@@ -72,10 +81,8 @@ export default function SettingsAdmin() {
         <PageHeader title="Settings" intro="Company details shown across the website." />
         {message && <Notice kind={message.kind}>{message.text}</Notice>}
 
-        <Card title="Company">
-          <Input label="Company name" placeholder="Balaji Construction" {...field('companyName')} />
-          <Input label="Tagline" placeholder="Homes and buildings in Haldwani, built with care." {...field('tagline')} />
-          <Field label="Logo">
+        <Card title="Logo" intro="The website always uses the name Balaji Construction Private Limited.">
+                    <Field label="Logo">
             <div className="mt-1.5 flex items-center gap-4">
               <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-lg border border-line bg-bg-soft">
                 {draft.logo ? <img src={photo(draft.logo, 160)} alt="Logo" className="h-full w-full object-contain" /> : <span className="text-xs text-ink-soft">None</span>}
@@ -86,6 +93,34 @@ export default function SettingsAdmin() {
             </div>
             {logoState && <span className="mt-1 block text-sm text-ink-soft">{logoState}</span>}
           </Field>
+        </Card>
+
+        <Card title="About the company" intro="Shown on the About page. Write only facts you are happy to publish.">
+          <Field label="About (English)" error={errors.aboutEn}>
+            <textarea className={inputCls(errors.aboutEn)} rows={4} value={draft.aboutEn || ''} onChange={(e) => update({ aboutEn: e.target.value })} />
+          </Field>
+          <Field label="About (Hindi)" hint="If empty, the Hindi page shows the English text." error={errors.aboutHi}>
+            <textarea className={inputCls(errors.aboutHi)} rows={4} lang="hi" value={draft.aboutHi || ''} onChange={(e) => update({ aboutHi: e.target.value })} />
+          </Field>
+        </Card>
+
+        <Card title="Services offered" intro="Tick the services you offer. If none are ticked, the website lists the categories of your published projects.">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SERVICES.map(([key, label]) => {
+              const on = (draft.services || []).includes(key);
+              return (
+                <label key={key} className="flex items-center gap-3 rounded-lg border border-line p-3">
+                  <input
+                    type="checkbox"
+                    checked={on}
+                    onChange={() => update({ services: on ? draft.services.filter((k) => k !== key) : [...(draft.services || []), key] })}
+                    className="h-5 w-5 accent-[var(--color-accent)]"
+                  />
+                  {label}
+                </label>
+              );
+            })}
+          </div>
         </Card>
 
         <Card title="Contact">

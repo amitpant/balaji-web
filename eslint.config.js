@@ -3,7 +3,9 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', '.wrangler'] },
+  { files: ['worker.js'], languageOptions: { globals: { HTMLRewriter: 'readonly' } } },
+  { files: ['tests/**/*.cjs'], languageOptions: { sourceType: 'commonjs', globals: { ...globals.node, ...globals.browser } } },
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx}'],
