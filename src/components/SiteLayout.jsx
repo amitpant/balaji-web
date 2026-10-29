@@ -90,7 +90,7 @@ export default function SiteLayout() {
           </div>
         </div>
         <p className="pb-8 text-center text-sm text-ink-soft">
-          © {new Date().getFullYear()} {site.name}
+          © {new Date().getFullYear()} {site.name} · Preview: projects and photos are samples
         </p>
       </footer>
 

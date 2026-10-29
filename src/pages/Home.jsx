@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import Section from '../components/Section.jsx';
+import ProjectCard from '../components/ProjectCard.jsx';
 import { site } from '../config/site.js';
+import { heroImage, img, projects } from '../data/sampleProjects.js';
 
 const services = [
   { title: 'Residential construction', text: 'Homes and villas from foundation to finishing.' },
@@ -33,7 +35,11 @@ export default function Home() {
             See our projects
           </Link>
         </div>
-        <div className="mt-12 aspect-[16/9] w-full rounded-[var(--radius-card)] bg-bg-soft" aria-hidden="true" />
+        <img
+          src={img(heroImage, 1800)}
+          alt="A finished two-storey home"
+          className="mt-12 aspect-[16/9] w-full rounded-[var(--radius-card)] bg-bg-soft object-cover"
+        />
       </section>
 
       <section className="border-y border-line">
@@ -49,16 +55,15 @@ export default function Home() {
 
       <Section title="Featured projects" intro="A selection of recent work. Each project lists its area, floors and cost.">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className="overflow-hidden rounded-[var(--radius-card)] border border-line">
-              <div className="aspect-[4/3] bg-bg-soft" />
-              <div className="p-5">
-                <p className="font-medium">Project coming soon</p>
-                <p className="text-sm text-ink-soft">Loaded from the admin panel</p>
-              </div>
-            </div>
-          ))}
+          {projects
+            .filter((p) => p.featured)
+            .map((p) => (
+              <ProjectCard key={p.slug} project={p} />
+            ))}
         </div>
+        <Link to="/projects" className="mt-8 inline-block font-medium text-accent hover:underline">
+          See all projects →
+        </Link>
       </Section>
 
       <Section title="What we do" soft>
