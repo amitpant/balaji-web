@@ -1,27 +1,27 @@
-// DEMO DATA ONLY. Replaced by GET /api/projects in Phase 4.
+// DEMO DATA: shown only while the admin panel has no published projects.
 // Photos: free Unsplash images (Unsplash License), hotlinked and resized by Unsplash.
 
-export const img = (id, w = 1200) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+const u = (id) => ({ url: `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=70`, publicId: id });
 
-export const heroImage = '1600596542815-ffad4c1539a9';
+export const heroImage = u('1600596542815-ffad4c1539a9');
 
 export const categories = [
   { id: 'all', label: 'All' },
   { id: 'residential', label: 'Residential' },
   { id: 'commercial', label: 'Commercial' },
   { id: 'interior', label: 'Interior' },
+  { id: 'renovation', label: 'Renovation' },
 ];
 
-export const projects = [
+export const sampleProjects = [
   {
     slug: 'family-home-kathgodam',
     title: 'Family home, Kathgodam',
     category: 'residential',
     status: 'completed',
     location: 'Kathgodam, Haldwani',
-    cover: '1580587771525-78b9dba3b914',
-    gallery: ['1580587771525-78b9dba3b914', '1583847268964-b28dc8f51f92', '1616047006789-b7af5afb8c20'],
+    coverImage: u('1580587771525-78b9dba3b914'),
+    gallery: [u('1583847268964-b28dc8f51f92'), u('1616047006789-b7af5afb8c20')],
     plotAreaSqft: 2400,
     builtUpAreaSqft: 3100,
     floors: 2,
@@ -38,8 +38,8 @@ export const projects = [
     category: 'residential',
     status: 'completed',
     location: 'Rampur Road, Haldwani',
-    cover: '1613977257363-707ba9348227',
-    gallery: ['1613977257363-707ba9348227', '1618221195710-dd6b41faaea6'],
+    coverImage: u('1613977257363-707ba9348227'),
+    gallery: [u('1618221195710-dd6b41faaea6')],
     plotAreaSqft: 3600,
     builtUpAreaSqft: 4200,
     floors: 2,
@@ -55,8 +55,7 @@ export const projects = [
     category: 'residential',
     status: 'completed',
     location: 'Unchapul, Haldwani',
-    cover: '1628012209120-d9db7abf7eab',
-    gallery: ['1628012209120-d9db7abf7eab'],
+    coverImage: u('1628012209120-d9db7abf7eab'),
     builtUpAreaSqft: 2800,
     floors: 2,
     description: 'Two matching homes on adjoining plots, built together to share costs and timelines.',
@@ -68,8 +67,7 @@ export const projects = [
     category: 'residential',
     status: 'ongoing',
     location: 'Kusumkhera, Haldwani',
-    cover: '1721815693498-cc28507c0ba2',
-    gallery: ['1721815693498-cc28507c0ba2'],
+    coverImage: u('1721815693498-cc28507c0ba2'),
     plotAreaSqft: 2000,
     floors: 3,
     description: 'A three-storey residence with a rental unit on the ground floor. Structure complete; finishing in progress.',
@@ -80,8 +78,8 @@ export const projects = [
     category: 'commercial',
     status: 'ongoing',
     location: 'Nainital Road, Haldwani',
-    cover: '1599707254554-027aeb4deacd',
-    gallery: ['1599707254554-027aeb4deacd', '1609867271967-a82f85c48531'],
+    coverImage: u('1599707254554-027aeb4deacd'),
+    gallery: [u('1609867271967-a82f85c48531')],
     builtUpAreaSqft: 12000,
     floors: 4,
     description: 'Shops on the ground floor with offices above. Third-floor slab under way.',
@@ -92,13 +90,11 @@ export const projects = [
     category: 'interior',
     status: 'completed',
     location: 'Mukhani, Haldwani',
-    cover: '1618221195710-dd6b41faaea6',
-    gallery: ['1618221195710-dd6b41faaea6', '1616047006789-b7af5afb8c20', '1583847268964-b28dc8f51f92'],
+    coverImage: u('1618221195710-dd6b41faaea6'),
+    gallery: [u('1616047006789-b7af5afb8c20'), u('1583847268964-b28dc8f51f92')],
     builtUpAreaSqft: 1450,
     cost: { onRequest: true },
     description: 'Full interiors for a 3BHK apartment: false ceiling, wardrobes, modular kitchen and lighting.',
     highlights: ['Modular kitchen', 'Wardrobes in every bedroom'],
   },
 ];
-
-export const findProject = (slug) => projects.find((p) => p.slug === slug);

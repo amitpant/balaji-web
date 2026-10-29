@@ -1,4 +1,4 @@
-// Placeholder company details. In Phase 2 these come from GET /api/settings.
+// Defaults shown until the owner fills in Settings in the admin panel.
 export const site = {
   name: 'Balaji Construction',
   tagline: 'Homes and buildings in Haldwani, built with care and clear pricing.',

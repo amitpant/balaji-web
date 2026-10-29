@@ -1,16 +1,34 @@
-import { useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import { nav, site } from '../config/site.js';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { nav } from '../config/site.js';
+import { useAllProjects, useSettings } from '../api/hooks.js';
+import { photo } from '../lib/photo.js';
+import { initPixel, track } from '../lib/pixel.js';
 import FloatingContact from './FloatingContact.jsx';
+import SocialIcons from './SocialIcons.jsx';
 
 export default function SiteLayout() {
   const [open, setOpen] = useState(false);
+  const site = useSettings();
+  const { isSample } = useAllProjects();
+  const { pathname } = useLocation();
+  const pixelId = site.marketing.facebookPixelId;
+
+  useEffect(() => {
+    initPixel(pixelId);
+  }, [pixelId]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    track('PageView');
+  }, [pathname, pixelId]);
 
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Link to="/" className="text-lg font-semibold tracking-tight" onClick={() => setOpen(false)}>
+          <Link to="/" className="flex items-center gap-2.5 text-lg font-semibold tracking-tight" onClick={() => setOpen(false)}>
+            {site.logo && <img src={photo(site.logo, 96)} alt="" className="h-8 w-8 rounded object-contain" />}
             {site.name}
           </Link>
 
@@ -20,7 +38,7 @@ export default function SiteLayout() {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `text-[15px] transition-colors hover:text-ink ${isActive ? 'text-ink font-medium' : 'text-ink-soft'}`
+                  `text-[15px] transition-colors hover:text-ink ${isActive ? 'font-medium text-ink' : 'text-ink-soft'}`
                 }
               >
                 {item.label}
@@ -50,12 +68,7 @@ export default function SiteLayout() {
         {open && (
           <nav className="border-t border-line px-5 pb-5 md:hidden" aria-label="Mobile">
             {nav.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                onClick={() => setOpen(false)}
-                className="block border-b border-line py-3.5 text-ink"
-              >
+              <NavLink key={item.to} to={item.to} onClick={() => setOpen(false)} className="block border-b border-line py-3.5 text-ink">
                 {item.label}
               </NavLink>
             ))}
@@ -71,15 +84,22 @@ export default function SiteLayout() {
         <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 md:grid-cols-3">
           <div>
             <p className="font-semibold">{site.name}</p>
-            <p className="mt-2 text-ink-soft">{site.address}</p>
+            {site.address && <p className="mt-2 whitespace-pre-line text-ink-soft">{site.address}</p>}
+            <div className="mt-4">
+              <SocialIcons social={site.social} />
+            </div>
           </div>
           <div className="text-ink-soft">
-            <p>
-              <a href={`tel:${site.phone}`} className="hover:text-ink">{site.phone}</a>
-            </p>
-            <p>
-              <a href={`mailto:${site.email}`} className="hover:text-ink">{site.email}</a>
-            </p>
+            {site.phone && (
+              <p>
+                <a href={`tel:${site.phone}`} className="hover:text-ink">{site.phone}</a>
+              </p>
+            )}
+            {site.email && (
+              <p>
+                <a href={`mailto:${site.email}`} className="hover:text-ink">{site.email}</a>
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-ink-soft md:justify-end">
             {nav.map((item) => (
@@ -90,11 +110,12 @@ export default function SiteLayout() {
           </div>
         </div>
         <p className="pb-8 text-center text-sm text-ink-soft">
-          © {new Date().getFullYear()} {site.name} · Preview: projects and photos are samples
+          © {new Date().getFullYear()} {site.name}
+          {isSample && ' · Preview: projects and photos are samples'}
         </p>
       </footer>
 
-      <FloatingContact />
+      <FloatingContact phone={site.phone} whatsapp={site.whatsapp} message={site.social.whatsappMessage} />
     </div>
   );
 }

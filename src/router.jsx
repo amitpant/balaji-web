@@ -10,7 +10,7 @@ import Contact from './pages/Contact.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 // Admin is code-split so public pages stay light.
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin.jsx'));
+const AdminApp = lazy(() => import('./pages/admin/AdminApp.jsx'));
 
 const loading = <div className="p-8 text-ink-soft">Loading…</div>;
 
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
     path: '/admin/*',
     element: (
       <Suspense fallback={loading}>
-        <AdminLogin />
+        <AdminApp />
       </Suspense>
     ),
   },
