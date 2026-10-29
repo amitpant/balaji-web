@@ -97,8 +97,11 @@ export default function AdminApp() {
     return (
       <div className="grid min-h-screen place-items-center p-6 text-center">
         <div>
-          <p className="font-semibold">Can’t reach the server</p>
-          <p className="mt-1 text-ink-soft">{me.error.message}. Check your internet and try again.</p>
+          <p className="font-semibold">{me.error.status === 0 ? 'Can’t reach the server' : 'The server has a problem'}</p>
+          <p className="mt-1 text-ink-soft">
+            {me.error.message}
+            {me.error.status === 0 ? '. Check your internet and try again.' : '.'}
+          </p>
           <button onClick={() => me.refetch()} className="mt-4 font-medium text-accent">Retry</button>
         </div>
       </div>
